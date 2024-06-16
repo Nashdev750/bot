@@ -1,6 +1,6 @@
 const { TOPUP, WITHDRAW, ACCOUNT, CHECKBAL, STARTTRADE, STOPTRADE, STAT } = require("../commands");
 const { updateBalance } = require("../user");
-const { User, Order } = require("../user/usermodel");
+const { User, Order, Trading } = require("../user/usermodel");
 
 const getAccoutMenu = async (bot,msg)=>{
     const user = await User.findOne({userid: msg.chat.id})
@@ -144,6 +144,12 @@ const startTrade = async(bot, msg,state,up=true)=>{
       ]
     }
   };
+  const trading = await Trading.find()
+  if(trading?.length > 0){
+      await Trading.findByIdAndUpdate({_id:trading[0]._id},{status:state})
+  }else{
+      await Trading.create({status:0})
+  }
   const message = `💵 Current balance: *${user?.balance?.toFixed(2)}* USDT. 
   Trading status: *${state==0 ? "Active" :'Stopped'}*`
 

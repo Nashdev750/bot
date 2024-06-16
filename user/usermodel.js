@@ -105,11 +105,22 @@ const orderSchema = new Schema(
     },
     {timestamps:true}
 );
+const tradingSchema = new Schema(
+    {
+        status:{
+            type: Number,
+            default: 0
+        }
+        
+    },
+    {timestamps:true}
+);
 
 
  const User = model('user',userSchema)
  const Withdraw = model('widthdraw',withdrawSchema)
  const Balance = model('balance',balanceSchema)
  const Order = model('order',orderSchema)
+ const Trading = model('trading',tradingSchema)
 
-module.exports = {User,Withdraw,Balance,Order}
+module.exports = {User,Withdraw,Balance,Order, Trading}

@@ -1,4 +1,4 @@
-const { Order, User } = require('../user/usermodel');
+const { Order, User, Trading } = require('../user/usermodel');
 
 const binance = require('binance-api-node').default;
 
@@ -18,9 +18,17 @@ async function getAccountBalance(asset) {
   return parseFloat(balance.free);
 }
 let trades = 0
-async function placeMarketMakingOrders(trading) {
+async function placeMarketMakingOrders() {
   try {
-    if(!trading) return
+    const trading = await Trading.find()
+    let active = false
+    if(trading?.length > 0){
+        active = trading[0].status == 0
+    }else{
+        active = true
+        await Trading.create({status:0})
+    }
+    if(!active) return
     const btcBalance = await getAccountBalance('BTC');
     const usdtBalance = await getAccountBalance('USDT');
 
