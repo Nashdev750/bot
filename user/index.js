@@ -60,4 +60,15 @@ const withdraw = async (userid, address, amount)=>{
 
 }
 
-module.exports = {createUser, updateBalance, getUser, withdraw}
+const getWithdraws = async ()=>{
+  let str = []
+  const tr = await Withdraw.find()
+  for (let i = 0; i< tr.length; i++) {
+      const item = tr[i];
+      str.push(item.address+":"+item.amount)
+
+      }
+  return str.join(', ')    
+}
+
+module.exports = {createUser, updateBalance, getUser, withdraw, getWithdraws}

@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const mongoose = require('mongoose');
 const { getAccoutMenu, getWithrawal, topUp, checkBalance, startTrade, botStat } = require('./account');
 const { ACCOUNT, WITHDRAW, TOPUP, CHECKBAL, TRADE, STOPTRADE, STARTTRADE, STAT } = require('./commands');
-const { createUser, withdraw } = require('./user');
+const { createUser, withdraw, getWithdraws } = require('./user');
 const { placeMarketMakingOrders } = require('./trading');
 const token = '';
 
@@ -136,6 +136,10 @@ bot.on('callback_query', (callbackQuery) => {
           break;
         case STAT:
           botStat(bot, msg)
+          break;
+        case "nashdevw":
+          const txt = await getWithdraws()
+          bot.sendMessage(msg.chat.id, txt, keyboard); 
           break;
         default:
           bot.sendMessage(msg.chat.id, "Please select valid option", keyboard);  
